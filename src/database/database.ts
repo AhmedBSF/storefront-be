@@ -21,3 +21,5 @@ const pool = new Pool({
   port: parseInt(POSTGRES_PORT as string, 10),
   max: 4,
 });
+
+export default pool;
