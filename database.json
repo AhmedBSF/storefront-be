@@ -34,5 +34,6 @@
     "password": {
       "ENV": "POSTGRES_PASSWORD"
     }
-  }
+  },
+  "sql-file": true
 }
