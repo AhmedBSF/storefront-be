@@ -6,7 +6,9 @@
     "start": "node dist/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "test": "rimraf dist && ENV=test db-migrate --env test up && npx tsc && jasmine && db-migrate db:drop test",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate:up": "db-migrate up",
+    "migrate:down": "db-migrate down"
   },
   "author": "AhmedBSF",
   "license": "MIT",
