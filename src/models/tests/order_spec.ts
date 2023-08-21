@@ -1,8 +1,10 @@
 import { OrderModel } from "../order";
+import { ProductModel } from "../product";
 import { UserModel } from "../user";
 
 const orderModel = new OrderModel();
 const userModel = new UserModel();
+const productModel = new ProductModel();
 
 describe("OrderModel", () => {
   it("should have an index method", () => {
@@ -15,6 +17,10 @@ describe("OrderModel", () => {
 
   it("should have a create method", () => {
     expect(orderModel.create).toBeDefined();
+  });
+
+  it("should have add to order method", () => {
+    expect(orderModel.addToOrder).toBeDefined();
   });
 
   it("create method should create an order", async () => {
@@ -41,6 +47,25 @@ describe("OrderModel", () => {
       id: 1,
       user_id: 1,
       status: "PENDING",
+    });
+  });
+
+  it("add to order", async () => {
+    const product = await productModel.create({
+      name: "Macbook Pro",
+      price: "1200",
+      category: "Electronics",
+    });
+    const result = await orderModel.addToOrder({
+      product_id: product.id as unknown as number,
+      order_id: 1,
+      quantity: 1,
+    });
+    expect(result).toEqual({
+      id: 1,
+      product_id: 1,
+      order_id: 1,
+      quantity: 1,
     });
   });
 });

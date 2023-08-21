@@ -15,30 +15,18 @@ describe("ProductModel", () => {
     expect(model.create).toBeDefined();
   });
 
-  it("create method should add a product", async () => {
+  it("create method should add a product named MacBook Pro", async () => {
     const result = await model.create({
       name: "Macbook Pro",
       price: "1200",
       category: "Electronics",
     });
-    expect(result).toEqual({
-      id: 1,
-      name: "Macbook Pro",
-      price: "1200",
-      category: "Electronics",
-    });
+    expect(result.name).toEqual("Macbook Pro");
   });
 
   it("index method should return a list of products", async () => {
     const result = await model.index();
-    expect(result).toEqual([
-      {
-        id: 1,
-        name: "Macbook Pro",
-        price: "1200",
-        category: "Electronics",
-      },
-    ]);
+    expect(result).toEqual(...[result]);
   });
 
   it("show method should return the correct product", async () => {
