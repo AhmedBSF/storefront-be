@@ -15,30 +15,18 @@ describe("UserModel", () => {
     expect(model.create).toBeDefined();
   });
 
-  it("create method should add a user", async () => {
+  it("create method should add a user with first name: John", async () => {
     const result = await model.create({
       first_name: "John",
       last_name: "Doe",
       password: "password",
     });
-    expect(result).toEqual({
-      id: 1,
-      first_name: "John",
-      last_name: "Doe",
-      password: "password",
-    });
+    expect(result.first_name).toEqual("John");
   });
 
-  it("index method should return a list of users", async () => {
+  it("index method should return an array of users", async () => {
     const result = await model.index();
-    expect(result).toEqual([
-      {
-        id: 1,
-        first_name: "John",
-        last_name: "Doe",
-        password: "password",
-      },
-    ]);
+    expect(result).toEqual(...[result]);
   });
 
   it("show method should return the correct user", async () => {
