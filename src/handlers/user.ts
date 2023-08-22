@@ -1,5 +1,8 @@
 import { Application, NextFunction, Request, Response } from "express";
 import { User, UserModel } from "../models/user";
+import jwt from "jsonwebtoken";
+import config from "../config";
+import verifyAuthToken from "../middleware/auth";
 
 const userModel = new UserModel();
 
@@ -14,16 +17,20 @@ const show = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-  try {
-    const user: User = {
-      username: req.body.username,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      password: req.body.password,
-    };
+  const user: User = {
+    username: req.body.username,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    password: req.body.password,
+  };
 
+  try {
     const newUser = await userModel.create(user);
-    res.json(newUser);
+    const token = jwt.sign(
+      { user: newUser },
+      config.tokenSecret as unknown as string
+    );
+    res.json(token);
   } catch (err) {
     res.status(400);
     res.json(err);
@@ -32,8 +39,7 @@ const create = async (req: Request, res: Response) => {
 
 const authenticate = async (req: Request, res: Response) => {
   try {
-    const username = req.body.username;
-    const password = req.body.password;
+    const { username, password } = req.body;
 
     const authenticatedUser = await userModel.authenticate(username, password);
     res.json(authenticatedUser);
@@ -44,9 +50,9 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const userRoutes = (app: Application) => {
-  app.get("/users", index);
+  app.get("/users", verifyAuthToken, index);
   app.post("/users", create);
-  app.get("/users/:id", show);
+  app.get("/users/:id", verifyAuthToken, show);
   app.post("/users/authenticate", authenticate);
 };
 
