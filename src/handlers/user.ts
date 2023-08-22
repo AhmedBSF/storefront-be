@@ -12,8 +12,13 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (req: Request, res: Response) => {
-  const user = await userModel.show(parseInt(req.params.id));
-  res.json(user);
+  try {
+    const user = await userModel.show(parseInt(req.params.id));
+    res.json(user);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
