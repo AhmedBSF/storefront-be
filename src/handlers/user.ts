@@ -16,6 +16,7 @@ const show = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const user: User = {
+      username: req.body.username,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       password: req.body.password,
@@ -29,10 +30,24 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+const authenticate = async (req: Request, res: Response) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const authenticatedUser = await userModel.authenticate(username, password);
+    res.json(authenticatedUser);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const userRoutes = (app: Application) => {
   app.get("/users", index);
   app.post("/users", create);
   app.get("/users/:id", show);
+  app.post("/users/authenticate", authenticate);
 };
 
 export default userRoutes;
