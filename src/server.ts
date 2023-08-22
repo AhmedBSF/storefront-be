@@ -6,6 +6,8 @@ import userRoutes from "./handlers/user";
 import productRoutes from "./handlers/product";
 import orderRoutes from "./handlers/order";
 
+const PORT = config.port;
+
 const app: express.Application = express();
 
 app.use(cors());
@@ -19,6 +21,6 @@ userRoutes(app);
 productRoutes(app);
 orderRoutes(app);
 
-app.listen(config.port, function () {
-  console.log(`starting app on : ${config.port}`);
+app.listen(PORT, function () {
+  console.log(`starting app on : ${PORT}`);
 });
