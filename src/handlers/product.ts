@@ -1,5 +1,6 @@
 import { Application, NextFunction, Request, Response } from "express";
 import { Product, ProductModel } from "../models/product";
+import verifyAuthToken from "../middleware/auth";
 
 const productModel = new ProductModel();
 
@@ -31,7 +32,7 @@ const create = async (req: Request, res: Response) => {
 
 const productRoutes = (app: Application) => {
   app.get("/products", index);
-  app.post("/products", create);
+  app.post("/products", verifyAuthToken, create);
   app.get("/products/:id", show);
 };
 

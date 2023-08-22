@@ -1,5 +1,6 @@
 import { Application, NextFunction, Request, Response } from "express";
 import { Order, OrderModel, OrderProduct } from "../models/order";
+import verifyAuthToken from "../middleware/auth";
 
 const ordertModel = new OrderModel();
 
@@ -29,13 +30,12 @@ const create = async (req: Request, res: Response) => {
 };
 
 const addToOrder = async (req: Request, res: Response) => {
+  const orderProduct: OrderProduct = {
+    product_id: req.body.product_id,
+    order_id: req.body.order_id,
+    quantity: req.body.quantity,
+  };
   try {
-    const orderProduct: OrderProduct = {
-      product_id: req.body.product_id,
-      order_id: req.body.order_id,
-      quantity: req.body.quantity,
-    };
-
     const newOrderProduct = await ordertModel.addToOrder(orderProduct);
     res.json(newOrderProduct);
   } catch (err) {
@@ -45,10 +45,10 @@ const addToOrder = async (req: Request, res: Response) => {
 };
 
 const orderRoutes = (app: Application) => {
-  app.get("/orders", index);
-  app.post("/orders", create);
-  app.get("/orders/:id", show);
-  app.post("/orders/add", addToOrder);
+  app.get("/orders", verifyAuthToken, index);
+  app.post("/orders", verifyAuthToken, create);
+  app.get("/orders/:id", verifyAuthToken, show);
+  app.post("/orders/add", verifyAuthToken, addToOrder);
 };
 
 export default orderRoutes;
