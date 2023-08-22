@@ -17,6 +17,7 @@ describe("UserModel", () => {
 
   it("create method should add a user with first name: John", async () => {
     const result = await model.create({
+      username: "John2077",
       first_name: "John",
       last_name: "Doe",
       password: "password",
@@ -33,6 +34,7 @@ describe("UserModel", () => {
     const result = await model.show(1);
     expect(result).toEqual({
       id: 1,
+      username: "John2077",
       first_name: "John",
       last_name: "Doe",
       password: "password",

@@ -25,6 +25,7 @@ describe("OrderModel", () => {
 
   it("create method should create an order", async () => {
     const user = await userModel.create({
+      username: "test_user",
       first_name: "John",
       last_name: "Doe",
       password: "password",
