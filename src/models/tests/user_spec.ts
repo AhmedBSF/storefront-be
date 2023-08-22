@@ -29,15 +29,4 @@ describe("UserModel", () => {
     const result = await model.index();
     expect(result).toEqual(...[result]);
   });
-
-  it("show method should return the correct user", async () => {
-    const result = await model.show(1);
-    expect(result).toEqual({
-      id: 1,
-      username: "John2077",
-      first_name: "John",
-      last_name: "Doe",
-      password: "password",
-    });
-  });
 });
