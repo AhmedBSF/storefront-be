@@ -64,10 +64,13 @@ export class UserModel {
       const result = await conn.query(sql, [username]);
 
       if (result.rows.length) {
-        const user = result.rows[0];
-        if (bcrypt.compareSync(password + config.pepper, user.password)) {
-          return user;
-        }
+        const res = result.rows[0];
+        console.log(res);
+        const isValidPassword = bcrypt.compareSync(
+          password + config.pepper,
+          res.password
+        );
+        if (isValidPassword) return res;
       }
       conn.release();
       return null;
